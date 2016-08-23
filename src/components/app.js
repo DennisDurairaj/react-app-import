@@ -4,6 +4,7 @@ import AddUserForm from './AddUserForm';
 import ListHeaders from './ListHeaders';
 import UserList from './UserList';
 import RenderForm from './RenderForm';
+import EmptyListMessage from './EmptyListMessage';
 
 const users = [
     {
@@ -60,7 +61,9 @@ export default class App extends React.Component {
     this.state = {
       users,
       showForm: false,
-      error: false
+      error: null,
+      addedUser: false,
+      showReset: false
     };
   }
 
@@ -76,35 +79,28 @@ export default class App extends React.Component {
     this.setState({ users: this.state.users, showForm: false });
   }
 
-  validateEmail (email) {
-      var emailPattern = /^([a-zA-Z0-9])+([a-zA-Z0-9._%+-])+@([a-zA-Z0-9_.-])+\.(([a-zA-Z]){2,6})$/;
-      return emailPattern.test(email);
-  }
-
-  validateName (name) {
-      var namePattern = /^([a-zA-Z ]){1,20}$/;
-      return namePattern.test(name);
-  }
-
-  renderError() {
-    this.setState({ error: true });
+  deleteUser(userIdx) {
+    var arr = users;
+    arr.splice(userIdx-1, 1);
+    this.setState({ users: arr });
   }
 
   render() {
     return (
       <div>
-      <Navbar />
-      <div className="row">
-        <div className="col-md-10 col-md-offset-1">
-          <div className="main-container">
-            <AddUserForm addUser={this.addUser.bind(this)} users={this.state.users} AddUserButtonClick={this.addUserButtonClick.bind(this)}
-            showForm={this.state.showForm} validateName={this.validateName.bind(this)} validateEmail={this.validateEmail.bind(this)} renderError={this.renderError}  />
-            <ListHeaders />
-            <UserList users={this.state.users} />
+        <Navbar />
+        <div className="row">
+          <div className="col-md-10 col-md-offset-1">
+            <div className="main-container">
+              <AddUserForm addUser={this.addUser.bind(this)} users={this.state.users} AddUserButtonClick={this.addUserButtonClick.bind(this)}
+              showForm={this.state.showForm} error={this.state.error} addedUser={this.state.addedUser} showReset={this.state.showReset}
+              />
+              <ListHeaders />
+              <EmptyListMessage users={this.state.users} />
+              <UserList users={this.state.users} deleteUser={this.deleteUser.bind(this)} />
+            </div>
           </div>
         </div>
-      </div>
-
       </div>
     );
   }

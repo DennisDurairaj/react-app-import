@@ -1,10 +1,10 @@
 import React from 'react';
 import RenderForm from './RenderForm';
+var validationHandler = require('../validationHandler');
 
 export default class AddUserForm extends React.Component {
   constructor(props) {
     super(props);
-    // this.resetMessage = this.resetMessage.bind(this);
 
     this.state = {
       error: null,
@@ -27,13 +27,21 @@ export default class AddUserForm extends React.Component {
     )
   }
 
-  resetMessage(e) {
-    if(e.target.value != '') {
+  resetMessage() {
+    if(this.refs.inputName.value != '' || this.refs.inputEmail.value != '') {
       this.setState({ showReset: true });
+      this.props.toggleShowReset;
     }
     else {
       this.setState({ showReset: false});
+      this.props.toggleShowReset;
     }
+  }
+
+  resetForm () {
+    this.refs.inputName.value = '';
+    this.refs.inputEmail.value = '';
+    this.setState({ showReset: false, error: null });
   }
 
   renderAddUserButton () {
@@ -52,11 +60,11 @@ export default class AddUserForm extends React.Component {
     if(this.props.showForm) {
       return (
         <form onSubmit={this.handleSubmit.bind(this)} className="form-inline" name="userForm">
-            <input onChange={this.resetMessage.bind(this)} autoFocus className='form-control input-spacing' type="text" name="name" placeholder="Name" ref="inputName"/>
-            <input onChange={this.resetMessage.bind(this)} className='form-control input-spacing' type="text" name="email" placeholder="Email" ref="inputEmail" />
+            <input onChange={this.resetMessage.bind(this)} autoFocus className='form-control input-spacing form-control-warning' type="text" name="name" placeholder="Name" ref="inputName"/>
+            <input onChange={this.resetMessage.bind(this)} className='form-control input-spacing form-control-warning' type="text" name="email" placeholder="Email" ref="inputEmail" />
             <button className="btn submit-button"><span>Submit</span></button>
             {this.renderError()}
-            {this.state.showReset ? <a href="#" className='reset-form' onClick={this.resetForm}>Reset fields</a> : null}
+            {this.state.showReset ? <a href="#" className='reset-form' onClick={this.resetForm.bind(this)}>Reset fields</a> : null}
         </form>
       )
     }
@@ -68,7 +76,7 @@ export default class AddUserForm extends React.Component {
     const inputEmail = this.refs.inputEmail;
     var nameVal = inputName.value;
     var emailVal = inputEmail.value;
-    const validateUser = this.validateUser(nameVal, emailVal);
+    const validateUser = validationHandler.validateUser(nameVal, emailVal, this.props.users);
 
     if (validateUser) {
       this.setState({ error: validateUser, addedUser: false });
@@ -87,43 +95,6 @@ export default class AddUserForm extends React.Component {
     }
 
     return <span className='error-message'><span className="glyphicon glyphicon-exclamation-sign"></span> {this.state.error}</span>
-  }
-
-  validateEmail (email) {
-      const emailPattern = /^([a-zA-Z0-9])+([a-zA-Z0-9._%+-])+@([a-zA-Z0-9_.-])+\.(([a-zA-Z]){2,6})$/;
-      return emailPattern.test(email);
-  }
-
-  validateName (name) {
-      const namePattern = /^([a-zA-Z ]){1,20}$/;
-      return namePattern.test(name);
-  }
-
-  validateUser(name, email) {
-    const currentUserList = this.props.users;
-    const nameCheck = this.validateName(name);
-    const emailCheck = this.validateEmail(email);
-    // const checkingEmailExists =  _.find(currentUserList, findEmail => findEmail.email == email);
-    // console.log(checkingEmailExists);
-
-    if(!nameCheck && !emailCheck) {
-      return 'Invalid Name and Email';
-      // return <span className='error-message'><span className="glyphicon glyphicon-exclamation-sign"></span> Invalid Name and Email</span>
-      // return 'invalid name and email';
-    }
-    else if (!nameCheck && emailCheck) {
-      return 'Invalid Name';
-    }
-    else if (nameCheck && !emailCheck) {
-      return 'Invalid Email';
-    }
-    else if(_.find(currentUserList, findEmail => findEmail.email == email)) {
-      return 'Email exists';
-      // return <span className='error-message'><span className="glyphicon glyphicon-exclamation-sign"></span> Email already exists</span>
-    }
-    else {
-      return null;
-    }
   }
 
   render() {

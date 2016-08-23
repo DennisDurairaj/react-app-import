@@ -1,6 +1,10 @@
 import React from 'react';
 
 export default class EachUser extends React.Component {
+  deleteUserFromList() {
+      this.props.deleteUser(this.props.id);
+  }
+
   render() {
     return (
       <div className= "user-styles">
@@ -11,7 +15,7 @@ export default class EachUser extends React.Component {
           {this.props.name}
         </div>
         <div className="col-md-6">
-          {this.props.email}<a className="pull-right" href="#" onClick={this.deleteUserFromList}><i className="ion-close-round delete-glyph"></i></a>
+          {this.props.email}<a className="pull-right" href="#" onClick={this.deleteUserFromList.bind(this)}><i className="ion-close-round delete-glyph"></i></a>
         </div>
       </div>
     );

@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "webpack-dev-server --content-base public/",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -15,6 +16,8 @@
   "license": "MIT",
   "homepage": "https://bitbucket.org/dennisdurairaj/react-app-v2#readme",
   "dependencies": {
+    "classnames": "2.2.5",
+    "lodash": "4.15.0",
     "react": "15.3.1",
     "react-dom": "15.3.1"
   },

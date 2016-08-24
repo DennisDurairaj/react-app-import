@@ -1,5 +1,4 @@
 import React from 'react';
-import RenderForm from './RenderForm';
 var validationHandler = require('../validationHandler');
 
 export default class AddUserForm extends React.Component {

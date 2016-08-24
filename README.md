@@ -7,7 +7,7 @@ A small list creating app that takes inputs and adds them to a list.
 
 1. Clone the repo into your directory.
 
-2. Open terminal and cd into the cloned repo directory, install required packages using `npm install`. Also install webpack and webpack-dev-server globally using `npm install -g webpack webpack-dev-server`
+2. Open terminal and cd into the cloned repo directory, install required packages using `npm install`.
 
 3. Run `npm start` to let webpack build the project.
 

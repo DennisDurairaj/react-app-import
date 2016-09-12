@@ -12,7 +12,7 @@ export default class Navbar extends React.Component {
 
             <div className="collapse navbar-collapse">
               <ul className="nav navbar-nav pull-right">
-                <li className="web-url"><a href="#">www.positionly.com</a></li>
+                <li className="web-url"><a href="#">www.react-app-v2.com</a></li>
                 </ul>
             </div>
           </div>
